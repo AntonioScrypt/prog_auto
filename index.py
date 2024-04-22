@@ -24,7 +24,7 @@ try:
     sedes = f"{get_valor_desc.split(':')[0]}"
     set_valor_desc = f"{sedes}: PROGRAMACION DE MENU DEL {prox_sem.day} al {fin_sem.day} de {prox_sem.strftime('%B')}"
     print('********************************************************************\n',set_valor_desc)
-    hoja['A1'].value = set_valor_desc
+    hoja['A1'].value = set_valor_desc.upper()
     
     ult_palabra_sede = sedes.split()[-1].lower()
     
@@ -43,7 +43,7 @@ try:
         
         if columna == 'J':
             print('Se ha terminado de modificar el archivo.')
-            libro.save('videogamesales.xlsx')
+            libro.save('programacion.xlsx')
             break
         else:
             # Muestra el valor actual de la columna B en la misma fila
@@ -80,7 +80,7 @@ try:
                 fila = 3
                 columna = chr(ord(columna) + 1)
             
-            libro.save('videogamesales.xlsx')
+            libro.save('programacion.xlsx')
     
 except FileNotFoundError:
     print(f'El archivo "{libro}" no se encontró. Asegúrate de que el archivo exista en la ubicación especificada.')
