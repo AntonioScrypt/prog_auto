@@ -11,8 +11,10 @@ locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
 root = tk.Tk()
 root.withdraw()
 
+cadena = '********************************************************************\n'
+
 try:
-    print('********************************************************************\nINICIANDO...')
+    print(cadena,'INICIANDO...')
     archivo_excel = filedialog.askopenfilename(title='Selecciona un archivo Excel', filetypes=[('Archivos Excel', '*.xlsx')])
     libro = load_workbook(archivo_excel)
     hoja = libro.active
@@ -22,9 +24,9 @@ try:
     fin_sem = prox_sem + datetime.timedelta(days=6)
     get_valor_desc = hoja['A1'].value
     sedes = f"{get_valor_desc.split(':')[0]}"
-    set_valor_desc = f"{sedes}: PROGRAMACION DE MENU DEL {prox_sem.day} al {fin_sem.day} de {prox_sem.strftime('%B')}"
-    print('********************************************************************\n',set_valor_desc)
-    hoja['A1'].value = set_valor_desc.upper()
+    set_valor_desc = (f"{sedes}: PROGRAMACION DE MENU DEL {prox_sem.day} al {fin_sem.day} de {fin_sem.strftime('%B')}").upper()
+    print(cadena + set_valor_desc)
+    hoja['A1'].value = set_valor_desc
     
     ult_palabra_sede = sedes.split()[-1].lower()
     
@@ -40,7 +42,6 @@ try:
         return valor[0].upper() + valor[1:].lower()
     
     while True:
-        
         if columna == 'J':
             print('Se ha terminado de modificar el archivo.')
             libro.save('programacion.xlsx')
@@ -52,16 +53,17 @@ try:
             if valor_columna_b not in seccion_a_ignorar:
             
                 valor_dia = hoja[f'{columna}2'].value
-                print(f'********************************************************************\nIngresa en: columna {columna} - fila {fila} - {valor_columna_b} - {valor_dia}')
+                print(f'{cadena}Ingresa en: columna {columna} - fila {fila} - {valor_columna_b} - {valor_dia}')
                 
                 # Solicita al usuario el nuevo valor para la columna C
-                valor = input(f'Escribe "fin" para terminar o "back" para corregir la celda anterior: ')
+                valor = input(f'{cadena}Escribe "fin" para terminar o "back" para corregir la celda anterior: ')
                 if valor.lower() == 'fin':
+                    print(f'{cadena}Se cerró el registro.')
                     break
                 elif valor.lower() == 'back':
                     if fila == 3:
                         if columna == 'C':
-                            print('********************************************************************\nYa estás en la primera columna y fila. No puedes retroceder más.')
+                            print(f'{cadena}Ya estás en la primera columna y fila. No puedes retroceder más.')
                             continue
                         else:
                             columna = chr(ord(columna) - 1)  # Retrocede a la columna anterior
@@ -73,7 +75,7 @@ try:
                     print('Se registró por defecto "-".')
                 hoja[f'{columna}{fila}'].value = cap_valor(valor)
             else:
-                print(f'********************************************************************\n{valor_columna_b} en la columna {columna} - fila {fila} no se modificará.')
+                print(cadena,'{valor_columna_b} en la columna {columna} - fila {fila} no se modificará.')
                 
             fila += 1  # Incrementa la fila para continuar con la siguiente
             if fila > fila_max:
